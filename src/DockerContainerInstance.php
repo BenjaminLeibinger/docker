@@ -124,4 +124,14 @@ class DockerContainerInstance
 
         return json_decode($json, true);
     }
+
+    public function logs(): string
+    {
+        $fullCommand = $this->config->getLogsCommand($this->getShortDockerIdentifier());
+
+        $process = Process::fromShellCommandline($fullCommand);
+        $process->run();
+
+        return trim($process->getOutput());
+    }
 }

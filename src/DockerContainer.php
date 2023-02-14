@@ -264,6 +264,17 @@ class DockerContainer
         return implode(' ', $execCommand);
     }
 
+    public function getLogsCommand(string $dockerIdentifier): string
+    {
+        $execCommand = [
+            $this->getBaseCommand(),
+            'logs',
+            $dockerIdentifier,
+        ];
+
+        return implode(' ', $execCommand);
+    }
+
     public function start(): DockerContainerInstance
     {
         $command = $this->getStartCommand();
