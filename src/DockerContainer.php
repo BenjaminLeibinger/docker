@@ -296,6 +296,36 @@ class DockerContainer
         );
     }
 
+    public function stop(): Process
+    {
+        $fullCommand = $this->getStopCommand($this->name);
+
+        $process = Process::fromShellCommandline($fullCommand);
+
+        $process->run();
+
+        return $process;
+    }
+
+    public function inspect(): array
+    {
+        $fullCommand = $this->getInspectCommand($this->name);
+
+        $process = Process::fromShellCommandline($fullCommand);
+        $process->run();
+
+        $json = trim($process->getOutput());
+
+        return json_decode($json, true);
+    }
+
+    public function isConatainerRunning(): bool {
+
+        $status = $this->inspect();
+
+        return isset($status[0]['State']['Status']) && 'running' === $status[0]['State']['Status'];
+    }
+
     protected function getExtraOptions(): array
     {
         $extraOptions = [];

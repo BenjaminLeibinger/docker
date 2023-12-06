@@ -125,6 +125,13 @@ class DockerContainerInstance
         return json_decode($json, true);
     }
 
+    public function isConatainerRunning(): bool {
+
+        $status = $this->inspect();
+
+        return isset($status[0]['State']['Status']) && 'running' === $status[0]['State']['Status'];
+    }
+
     public function logs(): string
     {
         $fullCommand = $this->config->getLogsCommand($this->getShortDockerIdentifier());
